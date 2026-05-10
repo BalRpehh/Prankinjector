@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>PlutoZ Injector</title>
+    <style>
+        body { 
+            margin: 0; 
+            background: transparent; 
+            font-family: 'Courier New', Courier, monospace; 
+            color: #fff; 
+            overflow: hidden; 
+        }
+        .menu { 
+            background: rgba(15, 15, 15, 0.95); 
+            border: 2px solid #00ffcc; 
+            border-radius: 12px; 
+            width: 260px; 
+            padding: 15px; 
+            box-shadow: 0 0 15px rgba(0, 255, 204, 0.6); 
+            margin: 5px; 
+        }
+        .title { 
+            text-align: center; 
+            color: #00ffcc; 
+            font-size: 20px; 
+            font-weight: bold; 
+            margin-bottom: 15px; 
+            text-shadow: 0 0 8px #00ffcc; 
+            border-bottom: 1px dashed #444; 
+            padding-bottom: 10px; 
+        }
+        .item { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            margin-bottom: 12px; 
+            font-size: 14px; 
+            font-weight: bold;
+        }
+        .sub-item { 
+            display: flex; 
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px; 
+            font-size: 13px; 
+            background: rgba(255,255,255,0.05); 
+            padding: 8px; 
+            border-radius: 6px; 
+            border-left: 3px solid #00ffcc;
+        }
+        select { 
+            background: #222; 
+            color: #00ffcc; 
+            border: 1px solid #444; 
+            padding: 4px; 
+            border-radius: 4px; 
+            outline: none; 
+            font-family: inherit;
+            font-weight: bold;
+        }
+        /* Toggle Switch */
+        .switch { position: relative; display: inline-block; width: 38px; height: 20px; }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #333; border-radius: 20px; transition: .4s; border: 1px solid #555;}
+        .slider:before { position: absolute; content: ""; height: 14px; width: 14px; left: 2px; bottom: 2px; background-color: white; border-radius: 50%; transition: .4s; }
+        input:checked + .slider { background-color: #00ffcc; border-color: #00ffcc; box-shadow: 0 0 10px #00ffcc;}
+        input:checked + .slider:before { transform: translateX(18px); background-color: #111;}
+        
+        /* Inject Button */
+        .btn-inject { 
+            width: 100%; 
+            background: #00ffcc; 
+            color: #000; 
+            border: none; 
+            padding: 10px; 
+            border-radius: 6px; 
+            font-weight: bold; 
+            cursor: pointer; 
+            margin-top: 5px; 
+            transition: 0.3s;
+            font-size: 14px;
+            box-shadow: 0 0 10px rgba(0, 255, 204, 0.4);
+        }
+        .btn-inject:active { transform: scale(0.95); }
+        .status { text-align: center; margin-top: 10px; font-size: 11px; color: #ff4444; height: 15px; font-style: italic;}
+    </style>
+</head>
+<body>
+    <div class="menu">
+        <div class="title">PLUTOZ INJECTOR V1</div>
+        
+        <div class="item">
+            <span>Auto Headshot</span>
+            <label class="switch"><input type="checkbox"><span class="slider"></span></label>
+        </div>
+        
+        <div class="item">
+            <span>Aimlock Pro</span>
+            <label class="switch"><input type="checkbox" id="aimLock"><span class="slider"></span></label>
+        </div>
+        
+        <div class="sub-item">
+            <span>Target:</span>
+            <select id="aimTarget">
+                <option value="legit">Legit (Smooth)</option>
+                <option value="body">Chest / Body</option>
+                <option value="head">Head (Brutal)</option>
+            </select>
+        </div>
+        
+        <div class="item">
+            <span>Antena / ESP Line</span>
+            <label class="switch"><input type="checkbox"><span class="slider"></span></label>
+        </div>
+
+        <div class="item">
+            <span>Bypass Anti-Ban</span>
+            <label class="switch"><input type="checkbox" checked><span class="slider"></span></label>
+        </div>
+
+        <button class="btn-inject" onclick="injectScript()">INJECT SCRIPT</button>
+        <div class="status" id="statusText">Status: Uninjected</div>
+    </div>
+
+    <script>
+        function injectScript() {
+            const status = document.getElementById('statusText');
+            const btn = document.querySelector('.btn-inject');
+            
+            btn.disabled = true;
+            btn.style.background = '#555';
+            btn.style.color = '#888';
+            btn.style.boxShadow = 'none';
+            btn.innerText = "INJECTING...";
+            
+            status.style.color = '#ffcc00';
+            status.innerText = "Bypassing Free Fire anti-cheat...";
+            
+            setTimeout(() => {
+                status.innerText = "Injecting memory offsets...";
+            }, 1500);
+            
+            setTimeout(() => {
+                status.style.color = '#00ffcc';
+                status.innerText = "Script Injected Successfully!";
+                btn.disabled = false;
+                btn.style.background = '#00ffcc';
+                btn.style.color = '#000';
+                btn.style.boxShadow = '0 0 10px rgba(0, 255, 204, 0.4)';
+                btn.innerText = "UPDATE SCRIPT";
+            }, 3500);
+        }
+    </script>
+</body>
+</html>
+
