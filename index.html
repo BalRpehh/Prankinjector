@@ -3,156 +3,289 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>PlutoZ Injector</title>
+    <title>PLUTOZ BORNEO V3 - ULTRA</title>
     <style>
+        :root {
+            --accent: #00ffa3;
+            --bg: rgba(10, 10, 15, 0.95);
+            --border: rgba(0, 255, 163, 0.3);
+            --glass: rgba(255, 255, 255, 0.03);
+        }
+
+        @keyframes scan {
+            0% { top: 0%; opacity: 0; }
+            50% { opacity: 1; }
+            100% { top: 100%; opacity: 0; }
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 5px var(--accent); }
+            50% { box-shadow: 0 0 20px var(--accent); }
+            100% { box-shadow: 0 0 5px var(--accent); }
+        }
+
         body { 
             margin: 0; 
             background: transparent; 
-            font-family: 'Courier New', Courier, monospace; 
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
             color: #fff; 
-            overflow: hidden; 
+            overflow: hidden;
+            -webkit-user-select: none;
         }
-        .menu { 
-            background: rgba(15, 15, 15, 0.95); 
-            border: 2px solid #00ffcc; 
-            border-radius: 12px; 
-            width: 260px; 
-            padding: 15px; 
-            box-shadow: 0 0 15px rgba(0, 255, 204, 0.6); 
-            margin: 5px; 
+
+        /* Container Utama */
+        .wrapper {
+            width: 340px;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+            margin: 10px;
+            position: relative;
+            backdrop-filter: blur(10px);
         }
-        .title { 
-            text-align: center; 
-            color: #00ffcc; 
-            font-size: 20px; 
-            font-weight: bold; 
-            margin-bottom: 15px; 
-            text-shadow: 0 0 8px #00ffcc; 
-            border-bottom: 1px dashed #444; 
-            padding-bottom: 10px; 
+
+        /* Efek Garis Scan */
+        .scanner-line {
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            background: var(--accent);
+            z-index: 99;
+            animation: scan 3s linear infinite;
+            box-shadow: 0 0 15px var(--accent);
         }
-        .item { 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            margin-bottom: 12px; 
-            font-size: 14px; 
-            font-weight: bold;
-        }
-        .sub-item { 
-            display: flex; 
+
+        /* Header */
+        .header {
+            background: linear-gradient(90deg, rgba(0,255,163,0.1) 0%, transparent 100%);
+            padding: 15px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 15px; 
-            font-size: 13px; 
-            background: rgba(255,255,255,0.05); 
-            padding: 8px; 
-            border-radius: 6px; 
-            border-left: 3px solid #00ffcc;
         }
-        select { 
-            background: #222; 
-            color: #00ffcc; 
-            border: 1px solid #444; 
-            padding: 4px; 
-            border-radius: 4px; 
-            outline: none; 
-            font-family: inherit;
+
+        .title-area h1 { margin: 0; font-size: 16px; letter-spacing: 2px; color: var(--accent); text-transform: uppercase; }
+        .title-area span { font-size: 10px; color: #888; }
+
+        .status-dot {
+            display: flex;
+            align-items: center;
+            font-size: 10px;
+            color: var(--accent);
             font-weight: bold;
         }
-        /* Toggle Switch */
-        .switch { position: relative; display: inline-block; width: 38px; height: 20px; }
-        .switch input { opacity: 0; width: 0; height: 0; }
-        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #333; border-radius: 20px; transition: .4s; border: 1px solid #555;}
-        .slider:before { position: absolute; content: ""; height: 14px; width: 14px; left: 2px; bottom: 2px; background-color: white; border-radius: 50%; transition: .4s; }
-        input:checked + .slider { background-color: #00ffcc; border-color: #00ffcc; box-shadow: 0 0 10px #00ffcc;}
-        input:checked + .slider:before { transform: translateX(18px); background-color: #111;}
-        
-        /* Inject Button */
-        .btn-inject { 
-            width: 100%; 
-            background: #00ffcc; 
-            color: #000; 
-            border: none; 
-            padding: 10px; 
-            border-radius: 6px; 
-            font-weight: bold; 
-            cursor: pointer; 
-            margin-top: 5px; 
-            transition: 0.3s;
-            font-size: 14px;
-            box-shadow: 0 0 10px rgba(0, 255, 204, 0.4);
+
+        .dot { height: 8px; width: 8px; background: var(--accent); border-radius: 50%; margin-right: 6px; animation: pulse 2s infinite; }
+
+        /* Navigation */
+        .nav { display: flex; background: rgba(0,0,0,0.3); border-bottom: 1px solid var(--border); }
+        .nav-item { 
+            flex: 1; padding: 12px; text-align: center; font-size: 11px; font-weight: bold; 
+            color: #666; cursor: pointer; transition: 0.3s;
         }
-        .btn-inject:active { transform: scale(0.95); }
-        .status { text-align: center; margin-top: 10px; font-size: 11px; color: #ff4444; height: 15px; font-style: italic;}
+        .nav-item.active { color: var(--accent); background: rgba(0,255,163,0.05); box-shadow: inset 0 -2px 0 var(--accent); }
+
+        /* Content */
+        .main-content { padding: 15px; max-height: 380px; overflow-y: auto; }
+        .group-name { font-size: 10px; color: var(--accent); margin-bottom: 15px; opacity: 0.7; letter-spacing: 1px; border-left: 2px solid var(--accent); padding-left: 8px; }
+
+        /* UI Components */
+        .control { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        .control label { font-size: 13px; color: #ccc; }
+
+        /* Toggle */
+        .switch { position: relative; width: 40px; height: 20px; }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background: #222; border-radius: 20px; transition: 0.4s; border: 1px solid #333; }
+        .slider:before { position: absolute; content: ""; height: 14px; width: 14px; left: 2px; bottom: 2px; background: #555; transition: 0.4s; border-radius: 50%; }
+        input:checked + .slider { background: rgba(0,255,163,0.2); border-color: var(--accent); }
+        input:checked + .slider:before { transform: translateX(20px); background: var(--accent); box-shadow: 0 0 10px var(--accent); }
+
+        /* Select & Range */
+        select { background: #111; color: #fff; border: 1px solid #333; padding: 5px; border-radius: 4px; font-size: 11px; outline: none; }
+        .range-box { display: flex; align-items: center; gap: 10px; width: 100px; }
+        input[type=range] { flex: 1; accent-color: var(--accent); }
+        .val { font-family: monospace; color: var(--accent); font-size: 11px; width: 25px; }
+
+        /* Fake Console Logs */
+        .console {
+            background: rgba(0,0,0,0.5);
+            margin: 15px;
+            padding: 10px;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 9px;
+            color: #00ff88;
+            height: 60px;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .log-entry { margin-bottom: 2px; opacity: 0.8; }
+        .log-entry::before { content: "> "; }
+
+        .footer { padding: 10px; text-align: center; font-size: 9px; color: #444; border-top: 1px solid rgba(255,255,255,0.02); }
     </style>
 </head>
 <body>
-    <div class="menu">
-        <div class="title">PLUTOZ INJECTOR V1</div>
-        
-        <div class="item">
-            <span>Auto Headshot</span>
-            <label class="switch"><input type="checkbox"><span class="slider"></span></label>
-        </div>
-        
-        <div class="item">
-            <span>Aimlock Pro</span>
-            <label class="switch"><input type="checkbox" id="aimLock"><span class="slider"></span></label>
-        </div>
-        
-        <div class="sub-item">
-            <span>Target:</span>
-            <select id="aimTarget">
-                <option value="legit">Legit (Smooth)</option>
-                <option value="body">Chest / Body</option>
-                <option value="head">Head (Brutal)</option>
-            </select>
-        </div>
-        
-        <div class="item">
-            <span>Antena / ESP Line</span>
-            <label class="switch"><input type="checkbox"><span class="slider"></span></label>
-        </div>
 
-        <div class="item">
-            <span>Bypass Anti-Ban</span>
-            <label class="switch"><input type="checkbox" checked><span class="slider"></span></label>
+<div class="wrapper">
+    <div class="scanner-line"></div>
+    
+    <div class="header">
+        <div class="title-area">
+            <h1>PlutoZ External</h1>
+            <span>v4.0.2 - INTERNAL INJECTOR</span>
         </div>
-
-        <button class="btn-inject" onclick="injectScript()">INJECT SCRIPT</button>
-        <div class="status" id="statusText">Status: Uninjected</div>
+        <div class="status-dot">
+            <div class="dot"></div> UNDETECTED
+        </div>
     </div>
 
-    <script>
-        function injectScript() {
-            const status = document.getElementById('statusText');
-            const btn = document.querySelector('.btn-inject');
-            
-            btn.disabled = true;
-            btn.style.background = '#555';
-            btn.style.color = '#888';
-            btn.style.boxShadow = 'none';
-            btn.innerText = "INJECTING...";
-            
-            status.style.color = '#ffcc00';
-            status.innerText = "Bypassing Free Fire anti-cheat...";
-            
-            setTimeout(() => {
-                status.innerText = "Injecting memory offsets...";
-            }, 1500);
-            
-            setTimeout(() => {
-                status.style.color = '#00ffcc';
-                status.innerText = "Script Injected Successfully!";
-                btn.disabled = false;
-                btn.style.background = '#00ffcc';
-                btn.style.color = '#000';
-                btn.style.boxShadow = '0 0 10px rgba(0, 255, 204, 0.4)';
-                btn.innerText = "UPDATE SCRIPT";
-            }, 3500);
-        }
-    </script>
-</body>
-</html>
+    <div class="nav">
+        <div class="nav-item active" onclick="tab(this, 'aim')">AIMBOT</div>
+        <div class="nav-item" onclick="tab(this, 'vis')">VISUALS</div>
+        <div class="nav-item" onclick="tab(this, 'misc')">MISC</div>
+    </div>
 
+    <div class="main-content">
+        <div id="aim" class="tab-pane">
+            <div class="group-name">AIM ASSISTANCE</div>
+            <div class="control">
+                <label>Memory Aimbot</label>
+                <label class="switch"><input type="checkbox" onchange="log('Aimbot Memory: ' + (this.checked?'ON':'OFF'))"><span class="slider"></span></label>
+            </div>
+            <div class="control">
+                <label>Target Lock</label>
+                <select>
+                    <option>Head (Precision)</option>
+                    <option>Neck (Safe)</option>
+                    <option>Body (Legit)</option>
+                </select>
+            </div>
+            <div class="control">
+                <label>FOV Range</label>
+                <div class="range-box">
+                    <input type="range" min="10" max="360" value="90" oninput="upd(this, '°')">
+                    <span class="val">90°</span>
+                </div>
+            </div>
+            <div class="control">
+                <label>Smoothness</label>
+                <div class="range-box">
+                    <input type="range" min="1" max="20" value="5" oninput="upd(this, '')">
+                    <span class="val">5</span>
+                </div>
+            </div>
+            <div class="control">
+                <label>Auto-Fire</label>
+                <label class="switch"><input type="checkbox"><span class="slider"></span></label>
+            </div>
+        </div>
+
+        <div id="vis" class="tab-pane" style="display:none">
+            <div class="group-name">ESP OVERLAY</div>
+            <div class="control">
+                <label>Player Box (3D)</label>
+                <label class="switch"><input type="checkbox" checked><span class="slider"></span></label>
+            </div>
+            <div class="control">
+                <label>Line Tracers</label>
+                <label class="switch"><input type="checkbox"><span class="slider"></span></label>
+            </div>
+            <div class="control">
+                <label>Skeleton ESP</label>
+                <label class="switch"><input type="checkbox"><span class="slider"></span></label>
+            </div>
+            <div class="control">
+                <label>Distance Info</label>
+                <label class="switch"><input type="checkbox" checked><span class="slider"></span></label>
+            </div>
+            <div class="control">
+                <label>Healthbar</label>
+                <label class="switch"><input type="checkbox" checked><span class="slider"></span></label>
+            </div>
+        </div>
+
+        <div id="misc" class="tab-pane" style="display:none">
+            <div class="group-name">EXPLOIT FEATURES</div>
+            <div class="control">
+                <label>Fast Medkit</label>
+                <label class="switch"><input type="checkbox"><span class="slider"></span></label>
+            </div>
+            <div class="control">
+                <label>Run on Water</label>
+                <label class="switch"><input type="checkbox"><span class="slider"></span></label>
+            </div>
+            <div class="control">
+                <label>Night Mode</label>
+                <label class="switch"><input type="checkbox"><span class="slider"></span></label>
+            </div>
+            <div class="group-name">SYSTEM</div>
+            <div class="control">
+                <label>Anti-Cheat Bypass</label>
+                <label class="switch"><input type="checkbox" checked disabled><span class="slider"></span></label>
+            </div>
+        </div>
+    </div>
+
+    <div class="console" id="console">
+        <div class="log-entry">Searching Free Fire process...</div>
+        <div class="log-entry">Process found [PID: 4921]</div>
+    </div>
+
+    <div class="footer">
+        Hardware ID: FB-9912-XPQ-001 | Connected to Borneo Server
+    </div>
+</div>
+
+<script>
+    // Tab switching logic
+    function tab(el, id) {
+        document.querySelectorAll('.tab-pane').forEach(p => p.style.display = 'none');
+        document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+        document.getElementById(id).style.display = 'block';
+        el.classList.add('active');
+        log('Switching to module: ' + id.toUpperCase());
+    }
+
+    // Range update logic
+    function upd(el, unit) {
+        el.nextElementSibling.innerText = el.value + unit;
+    }
+
+    // Console logging logic
+    const logs = [
+        "Bypassing anticheat...",
+        "Hooking Direct3D...",
+        "Memory offset found: 0x77AF2",
+        "ESP context initialized",
+        "Aimbot aim_lock_head set",
+        "Filtering player entities...",
+        "Connected to proxy 103.11.x.x"
+    ];
+
+    function log(msg) {
+        const c = document.getElementById('console');
+        const d = document.createElement('div');
+        d.className = 'log-entry';
+        d.innerText = msg;
+        c.appendChild(d);
+        if(c.childNodes.length > 8) c.removeChild(c.firstChild);
+        c.scrollTop = c.scrollHeight;
+    }
+
+    // Random fake logs
+    setInterval(() => {
+        if(Math.random() > 0.7) {
+            log(logs[Math.floor(Math.random() * logs.length)]);
+        }
+    }, 4000);
+</script>
+
+</body>
+                    </html>
+                
